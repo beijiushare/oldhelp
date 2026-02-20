@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>文本解析工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 40px 20px 20px;
+        }
+        
+        .content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .text-highlight {
+            background-color: #0c7a0c;
+            color: #ffffff;
+            padding: 0px 6px;
+            border-radius: 12px;
+            display: inline;
+        }
+        
+        h2 {
+            font-size: 24px;
+            margin: 20px 0 15px;
+            color: #333;
+        }
+        
+        h3 {
+            font-size: 22px;
+            margin: 15px 0 10px;
+            color: #555;
+        }
+        
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        p {
+            font-size: 18px;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content" id="output-content">
+            <p>loading……</p>
+        </div>
+    </div>
+    
+    <script>
+        // 解析文本
+        function parseText(text) {
+            const outputDiv = document.getElementById('output-content');
+            
+            // 直接使用传入的文本
+            let content = text;
+            
+            // 解析文本
+            let html = '';
+            
+            // 按行分割，处理各种换行符
+            const lines = content.split(/\r?\n/);
+            
+            lines.forEach(line => {
+                // 去除首尾空白
+                line = line.trim();
+                
+                // 处理一级标题
+                if (line.startsWith('#')) {
+                    const title = line.substring(1).trim();
+                    html += `<h2>${title}</h2>`;
+                }
+                // 处理二级标题
+                else if (line.startsWith('##')) {
+                    const title = line.substring(2).trim();
+                    html += `<h3>${title}</h3>`;
+                }
+                // 处理普通文本
+                else if (line !== '') {
+                    // 处理链接文本 链接文本||https://example.com
+                    let processedLine = line;
+                    if (line.includes('||')) {
+                        const parts = line.split('||');
+                        if (parts.length === 2) {
+                            const linkText = parts[0].trim();
+                            const url = parts[1].trim();
+                            processedLine = `<a href="${url}" target="_blank">${linkText}</a>`;
+                        }
+                    }
+                    // 处理高亮文本 [[重点信息]]
+                    processedLine = processedLine.replace(/\[\[(.*?)\]\]/g, '<span class="text-highlight">$1</span>');
+                    html += `<p>${processedLine}</p>`;
+                }
+            });
+            
+            // 显示结果
+            outputDiv.innerHTML = html || '<p>解析结果为空</p>';
+        }
+        
+        // 检查URL参数中是否有文本
+        function checkUrlParams() {
+            const outputDiv = document.getElementById('output-content');
+            
+            // 尝试从完整URL中提取text参数
+            let textParam = '';
+            
+            // 方法：从完整URL中手动提取
+            try {
+                const url = window.location.href;
+                // 找到text参数的开始位置
+                const textStart = url.indexOf('?text=');
+                if (textStart !== -1) {
+                    // 提取从text=开始到URL结束的部分
+                    textParam = url.substring(textStart + 6);
+                }
+            } catch (e) {
+                // 提取失败，保持textParam为空
+            }
+            
+            if (textParam) {
+                try {
+                    // 解码URL编码的文本
+                    let decodedText = decodeURIComponent(textParam);
+                    
+                    // 处理可能的双重编码
+                    try {
+                        decodedText = decodeURIComponent(decodedText);
+                    } catch (e) {
+                        // 双重解码失败，使用单次解码结果
+                    }
+                    
+                    // 处理转义的换行符
+                    decodedText = decodedText.replace(/\\n/g, '\n');
+                    
+                    parseText(decodedText);
+                } catch (e) {
+                    outputDiv.innerHTML = `<p>解码失败：${e.message}</p>`;
+                }
+            } else {
+                // 保持默认显示"有待展示"
+            }
+        }
+        
+        // 页面加载时检查URL参数
+        window.onload = checkUrlParams;
+    </script>
+</body>
+</html>
