@@ -26,6 +26,7 @@
             text-align: center;
             font-size: 28px;
             margin-bottom: 30px;
+            margin-top: 30px;
             color: #333;
         }
         
@@ -66,5 +67,47 @@
             <a href="about.html" class="button">关于</a>
         </div>
     </div>
+
+    <!-- 访问统计卡片 -->
+    <div class="stats-card">
+        <h3>访问统计</h3>
+        <div class="stats-content">
+            <p>本站已经接待 <span id="vercount_value_page_pv">Loading</span> 次访问</p>
+            <p>提供了 <span id="vercount_value_site_pv">Loading</span> 次服务</p>
+            <p>累计 <span id="vercount_value_site_uv">Loading</span> 人次（设备数）</p>
+        </div>
+    </div>
+    
+    <style>
+        .stats-card {
+            background-color: white;
+            margin: 30px 20px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .stats-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #333;
+        }
+        
+        .stats-content p {
+            font-size: 18px;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .stats-content span {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+    </style>
+    
+    <!-- Vercount 统计访问数目 -->
+    <script defer src="https://events.vercount.one/js"></script>
+
 </body>
 </html>
