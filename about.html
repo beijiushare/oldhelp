@@ -9,6 +9,116 @@
         .container {
             max-width: 100%;
             padding: 40px 20px 20px;
+            position: relative;
+        }
+        
+        /* 菜单按钮 */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            z-index: 1001;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .menu-btn span {
+            width: 24px;
+            height: 3px;
+            background-color: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+        
+        /* 侧边目录 */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -500px;
+            width: 280px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: -4px 0 8px rgba(0,0,0,0.1);
+            padding: 80px 20px 20px;
+            transition: right 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .sidebar.active {
+            right: 0;
+        }
+        
+        .sidebar h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .sidebar li {
+            margin-bottom: 12px;
+        }
+        
+        .sidebar a {
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .sidebar a:hover {
+            background-color: #f0f0f0;
+        }
+        
+        /* 遮罩层 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         .text-highlight {
@@ -28,8 +138,48 @@
 </head>
 
 <body>
+    <button class="menu-btn" id="menuBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="overlay" id="overlay"></div>
+    <div class="sidebar" id="sidebar">
+        <h3>目录</h3>
+        <ul>
+            <li><a href="#section1">本应用包括什么</a></li>
+            <li><a href="#section2">隐私与政策</a></li>
+            <li><a href="#section3">其他问题</a></li>
+            <li><a href="#section4">这是一个教程吗？</a></li>
+            <li><a href="#section5">为什么开始该项目？</a></li>
+            <li><a href="#section6">写在最后的话</a></li>
+        </ul>
+    </div>
     <div class="container">
-        <h2>这是一个教程吗？</h2>
+
+        <h2 id="section1">本应用包括什么</h2>
+        <p>[[实用工具引导]]：覆盖日常高频操作，每一步都有详细引导。</p>
+        <p>[[休闲娱乐内容]]：简单易上手的小游戏，附带清晰的游玩引导，戏剧、电视剧观看网站推荐，丰富休闲时光。</p>
+
+        <h2 id="section2">隐私与政策</h2>
+        <p>
+            本应用全程[[不会收集、存储、上传]]任何个人信息。
+        </p>
+        <p>
+            应用内跳转的第三方小游戏/工具页面，其隐私规则由对应平台独立制定，本应用[[不介入、不获取]]任何第三方平台的用户数据。
+        </p>
+        <p>应用会收集[[匿名统计数据]]用于展示服务情况</p>
+        <p>
+            我们承诺：应用的所有功能仅为“引导操作”，[[不会以任何形式窃取、泄露您的信息，也不会推送广告和不必要的弹窗打扰使用]]。
+        </p>
+
+        <h2 id="section3">其他问题</h2>
+        <p>[[我们如何盈利？]]</p>
+        <p>这是一项公益项目，不追求盈利，也不提供盈利渠道，要支持本项目，您可以为项目点star或者提供您制作的引导</p>
+        <p>[[如何提交需求或者添加您制作的引导、推荐的网站]]
+        <p>请访问<a href="https://github.com/beijiushare/oldhelp/issues" class="external-link">Github issues</a></p>
+
+        <h2 id="section4">这是一个教程吗？</h2>
         <p>
             这[[不是一个（或多个）教程]]，教程意味着要“学会”、要记住步骤，甚至要浅层次理解背后的逻辑。但对很多不熟悉电子设备、对网络了解不多的长辈和其他群体来说，这其实是一种傲慢——用年轻人的反应速度、清晰思维、良好记忆力，去要求每一个人都做到。。
         </p>
@@ -37,31 +187,15 @@
             所以，本应用[[不教人“学会”]]，而只做一件事：[[详细引导每一步，带着您完成操作]]。因此，这是一份（或多份）引导，就像你打开一个完全陌生的APP时，那份让人瞬间安心、松一口气的"[[引导]]"。
         </p>
 
-        <h2>本应用包括什么</h2>
-        <p>[[实用工具引导]]：覆盖日常高频操作，每一步都有详细引导。</p>
-        <p>[[休闲娱乐内容]]：简单易上手的小游戏，附带清晰的游玩引导，戏剧、电视剧观看网站推荐，丰富休闲时光。</p>
-        <p>要提交需求或者添加您制作的引导、推荐的网站，请访问<a href="https://github.com/beijiushare/oldhelp/issues" class="external-link">Github issues</a></p>
-
-        <h2>为什么开始该项目？</h2>
+        <h2 id="section5">为什么开始该项目？</h2>
         <p>
-            我们身边的长辈，曾是撑起家庭、适应过无数生活变化的人。但面对智能手机、各类APP时，他们却常因“步骤复杂”“记不住操作”而手足无措——想和远方的孙辈视频，却找不到入口；想学着用微信转账，却怕点错按钮；想偶尔玩个小游戏解闷，却连如何开始都不知道。
+            我们身边的长辈，曾经也是追逐时代风潮、适应过无数生活变化的人。但面对智能手机、各类APP时，他们却常因“步骤复杂”“记不住操作”而手足无措——想和远方的孙辈视频，却找不到入口；想学着用微信转账，却怕点错按钮；想偶尔玩个小游戏解闷，却连如何开始都不知道。
         </p>
         <p>
             我们不想让[[“数字鸿沟”把长辈挡在便捷生活之外]]，也不想[[用“你该学会”的要求给他们压力]]。于是有了这个小工具：没有复杂的教程，只有一步步的引导；[[不求“学会”，只求“当下能做完”]]。让长辈用手机时，能像有人在身边手把手带着做一样，安心、不慌。
         </p>
 
-        <h2>隐私与政策</h2>
-        <p>
-            本应用全程[[不会收集、存储、上传]]任何个人信息。
-        </p>
-        <p>
-            应用内跳转的第三方小游戏/工具页面，其隐私规则由对应平台独立制定，本应用[[不介入、不获取]]任何第三方平台的用户数据。
-        </p>
-        <p>
-            我们承诺：应用的所有功能仅为“引导操作”，[[不会以任何形式窃取、泄露您的信息，也不会推送广告和不必要的弹窗打扰使用]]。
-        </p>
-
-        <h2>写在最后的话</h2>
+        <h2 id="section6">写在最后的话</h2>
         <p>
             这个小工具没有华丽的界面，也没有复杂的功能，只希望能帮到那些[[想用好手机，却又怕“学不会”]]的长辈。
         </p>
@@ -80,6 +214,34 @@
             const elements = document.querySelectorAll('p');
             elements.forEach(function (element) {
                 element.innerHTML = element.innerHTML.replace(/\[\[(.*?)\]\]/g, '<span class="text-highlight">$1</span>');
+            });
+        });
+        
+        // 侧边菜单功能
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuBtn = document.getElementById('menuBtn');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const sidebarLinks = document.querySelectorAll('.sidebar a');
+            
+            // 切换菜单
+            function toggleMenu() {
+                menuBtn.classList.toggle('active');
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
+            
+            // 点击菜单按钮
+            menuBtn.addEventListener('click', toggleMenu);
+            
+            // 点击遮罩层
+            overlay.addEventListener('click', toggleMenu);
+            
+            // 点击目录链接
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    toggleMenu();
+                });
             });
         });
     </script>
